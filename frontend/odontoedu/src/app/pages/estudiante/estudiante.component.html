@@ -1,0 +1,141 @@
+<main class="main">
+  <header class="topbar">
+    <div>
+      <h1>Panel Estudiante</h1>
+      <span class="hint">Materias y procedimientos (requiere aprobación del profesor)</span>
+      <p class="hint" *ngIf="usuarioActual" style="margin-top:4px; color:#fff; font-weight:700;">
+        👤 {{ usuarioActual?.nombre }} {{ usuarioActual?.apellido }}
+      </p>
+      <p class="hint" *ngIf="miProfesor" style="margin-top:2px; color:#90caf9; font-size:13px;">
+        🎓 Profesor asignado: {{ miProfesor.nombre }} {{ miProfesor.apellido }}
+      </p>
+      <p class="hint" *ngIf="!miProfesor && !cargando" style="margin-top:2px; color:#ef9a9a; font-size:13px;">
+        ⚠️ Sin profesor asignado — contacta al administrador
+      </p>
+    </div>
+
+    <div class="right">
+      <span class="pill" *ngIf="cargando">⏳ Cargando.</span>
+      <button class="btn-outline" type="button" (click)="cargarProgreso()">Actualizar</button>
+      <button class="btn-danger" type="button" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="alert" *ngIf="error">{{ error }}</div>
+
+  <!-- RESUMEN DE SOLICITUDES -->
+  <section class="resumen-solicitudes" *ngIf="!cargando">
+    <div class="resumen-item aprobado">
+      <span class="resumen-num">{{ solicitudesAprobadas.length }}</span>
+      <span class="resumen-label">Aprobadas</span>
+    </div>
+    <div class="resumen-item pendiente">
+      <span class="resumen-num">{{ solicitudesPendientes.length }}</span>
+      <span class="resumen-label">Pendientes</span>
+    </div>
+    <div class="resumen-item denegado">
+      <span class="resumen-num">{{ solicitudesDenegadas.length }}</span>
+      <span class="resumen-label">Denegadas</span>
+    </div>
+  </section>
+
+  <!-- MATERIAS Y PROGRESO -->
+  <section class="grid">
+    <div class="card" *ngFor="let materia of materias">
+      <div class="card-head">
+        <div>
+          <h2>{{ materia.nombre }}</h2>
+          <p class="muted">Completa {{ totalRequeridos }} solicitudes aprobadas por tu profesor para alcanzar el 100%</p>
+        </div>
+      </div>
+
+      <div class="proc" *ngFor="let p of materia.procedimientos">
+        <div class="proc-left">
+          <div class="proc-name">{{ p.nombre }}</div>
+
+          <div class="proc-sub">
+            Aprobados: <b>{{ totalAprobados }}</b> / {{ p.requerido }}
+            <span class="muted"> (cada solicitud aprobada por el profesor suma 1)</span>
+          </div>
+
+          <!-- Barra de progreso visual -->
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill"
+                   [style.width.%]="calcularPorcentajeGeneral()">
+              </div>
+            </div>
+            <span class="progress-bar-text">{{ calcularPorcentajeGeneral() }}%</span>
+          </div>
+
+          <div style="margin-top: 12px;">
+            <span class="badge-complete" *ngIf="totalAprobados >= p.requerido">
+              ✅ ¡Materia completada!
+            </span>
+          </div>
+
+          <button class="btn-primary"
+                  type="button"
+                  [disabled]="totalAprobados >= p.requerido"
+                  (click)="irAGestionPacientes()">
+            {{ totalAprobados >= p.requerido ? 'Completado' : 'Gestionar pacientes (hacer ' + p.nombre + ')' }}
+          </button>
+        </div>
+
+        <!-- círculo progreso -->
+        <div class="ring">
+          <svg viewBox="0 0 36 36" class="progress">
+            <path class="bg"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"/>
+
+            <path class="fg"
+              [attr.stroke-dasharray]="calcularPorcentajeGeneral() + ', 100'"
+              d="M18 2.0845
+                a 15.9155 15.9155 0 0 1 0 31.831
+                a 15.9155 15.9155 0 0 1 0 -31.831"/>
+
+            <text x="18" y="20.35" class="text">
+              {{ calcularPorcentajeGeneral() }}%
+            </text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORIAL DE SOLICITUDES -->
+  <section class="card" *ngIf="!cargando && (solicitudesAprobadas.length > 0 || solicitudesPendientes.length > 0 || solicitudesDenegadas.length > 0)">
+    <h3>Historial de solicitudes</h3>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Motivo</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of solicitudesAprobadas.concat(solicitudesPendientes).concat(solicitudesDenegadas)">
+            <td>{{ s.id_solicitud }}</td>
+            <td>{{ s.paciente_nombre || '—' }}</td>
+            <td>{{ s.motivo || '—' }}</td>
+            <td>
+              <span class="estado-pill"
+                    [class.aprobado]="s.estado === 'APROBADO'"
+                    [class.pendiente]="s.estado === 'PENDIENTE'"
+                    [class.denegado]="s.estado === 'DENEGADO'">
+                {{ s.estado }}
+              </span>
+            </td>
+            <td>{{ s.fecha_creacion ? (s.fecha_creacion | date:'dd/MM/yyyy HH:mm') : '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>

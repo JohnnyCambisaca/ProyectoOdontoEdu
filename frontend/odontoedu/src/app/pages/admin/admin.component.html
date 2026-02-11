@@ -1,0 +1,651 @@
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">🦷</div>
+      <div>
+        <div class="title">OdontoEdu</div>
+        <div class="sub">ADMIN</div>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <button class="item" [class.active]="seccion==='dashboard'" (click)="ir('dashboard')">Inicio</button>
+      <button class="item" [class.active]="seccion==='pacientes'" (click)="ir('pacientes')">Pacientes</button>
+      <button class="item" [class.active]="seccion==='estudiantes'" (click)="ir('estudiantes')">Estudiantes</button>
+      <button class="item" [class.active]="seccion==='profesores'" (click)="ir('profesores')">Profesores</button>
+      <button class="item" [class.active]="seccion==='asignacion'" (click)="ir('asignacion')">Asignaciones</button>
+      <button class="item" [class.active]="seccion==='docente-estudiante'" (click)="ir('docente-estudiante')">Docente ↔ Estudiante</button>
+    </nav>
+
+    <div class="bottom">
+      <button class="logout" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1>Panel Administrador</h1>
+        <span class="hint">UNIVERSIDAD POLITECNICA SALESIANA</span>
+      </div>
+      <div>
+        <span class="pill" *ngIf="cargando">⏳ Cargando…</span>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="alert error" *ngIf="error">{{ error }}</div>
+      <div class="alert ok" *ngIf="ok">{{ ok }}</div>
+
+      <!-- DASHBOARD -->
+      <div *ngIf="seccion==='dashboard'" class="grid">
+        <div class="card">
+          <h3>Pacientes registrados</h3>
+          <div class="big">{{ pacientes.length }}</div>
+          <button class="btn" (click)="cargarPacientes()">Actualizar</button>
+        </div>
+
+        <div class="card">
+          <h3>Estudiantes registrados</h3>
+          <div class="big">{{ estudiantes.length }}</div>
+          <button class="btn" (click)="cargarEstudiantes()">Actualizar</button>
+        </div>
+
+        <div class="card">
+          <div class="kpi-title">Profesores registrados</div>
+          <div class="big">{{ profesores.length || 0 }}</div>
+          <button class="btn" (click)="cargarProfesores()">Actualizar</button>
+        </div>
+
+        <div class="card" style="grid-column: 3 / 1;">
+          <h3>Acciones rápidas</h3>
+          <div class="row">
+            <button class="btn primary" (click)="ir('pacientes')">Crear / Ver pacientes</button>
+            <button class="btn primary" (click)="ir('estudiantes')">Crear / Ver estudiantes</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- PACIENTES ADMIN (CRUD) -->
+      <!-- ========================= -->
+      <div *ngIf="seccion==='pacientes'">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Pacientes</h2>
+              <p class="muted">Crear, editar y eliminar pacientes</p>
+            </div>
+
+            <button class="btn-outline" (click)="cargarPacientes()">Recargar</button>
+          </div>
+
+          <div class="pill" *ngIf="cargandoPacientes">⏳ Cargando pacientes...</div>
+          <div class="alert error" *ngIf="errorPacientes">{{ errorPacientes }}</div>
+
+          <!-- Crear -->
+          <div class="grid-form">
+            <input class="input" placeholder="Nombre" [(ngModel)]="nuevoPaciente.nombre" />
+            <input class="input" placeholder="Apellido" [(ngModel)]="nuevoPaciente.apellido" />
+            <input class="input" placeholder="Cédula" [(ngModel)]="nuevoPaciente.cedula" />
+            <input class="input" placeholder="Teléfono" [(ngModel)]="nuevoPaciente.telefono" />
+            <input class="input" placeholder="Dirección" [(ngModel)]="nuevoPaciente.direccion" />
+
+            <button class="btn-primary" (click)="crearPaciente()">Crear paciente</button>
+          </div>
+
+          <!-- Tabla -->
+          <div class="table-wrap" *ngIf="pacientes.length > 0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Cédula</th>
+                  <th>Teléfono</th>
+                  <th>Dirección</th>
+                  <th style="width: 220px;">Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let p of pacientes">
+                  <td>{{ p.id_paciente || p.id }}</td>
+                  <td>{{ p.nombre }}</td>
+                  <td>{{ p.apellido }}</td>
+                  <td>{{ p.cedula }}</td>
+                  <td>{{ p.telefono }}</td>
+                  <td>{{ p.direccion }}</td>
+                  <td class="actions">
+                    <button class="btn-outline" (click)="abrirModalEditarPaciente(p)">Editar</button>
+                    <button class="btn-danger" (click)="abrirModalEliminarPaciente(p)">Eliminar</button>
+
+                    <button
+                      class="btn"
+                      type="button"
+                      [routerLink]="['/admin/paciente', p.id_paciente]"
+                      (click)="$event.stopPropagation()"
+                    >
+                      Ver
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="muted" *ngIf="!cargandoPacientes && pacientes.length === 0">
+            No hay pacientes registrados.
+          </div>
+        </div>
+
+        <!-- MODAL EDITAR PACIENTE -->
+        <div class="modal-backdrop" *ngIf="modalEditarPaciente">
+          <div class="modal">
+            <h3>Editar paciente</h3>
+
+            <div class="modal-form" *ngIf="pacienteEditando">
+              <input class="input" placeholder="Nombre" [(ngModel)]="pacienteEditando.nombre" />
+              <input class="input" placeholder="Apellido" [(ngModel)]="pacienteEditando.apellido" />
+              <input class="input" placeholder="Cédula" [(ngModel)]="pacienteEditando.cedula" />
+              <input class="input" placeholder="Teléfono" [(ngModel)]="pacienteEditando.telefono" />
+              <input class="input" placeholder="Dirección" [(ngModel)]="pacienteEditando.direccion" />
+            </div>
+
+            <div class="modal-actions">
+              <button class="btn-outline" (click)="cerrarModalEditarPaciente()">Cancelar</button>
+              <button class="btn-primary" (click)="guardarEdicionPaciente()">Guardar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODAL ELIMINAR PACIENTE -->
+        <div class="modal-backdrop" *ngIf="modalEliminarPaciente">
+          <div class="modal">
+            <h3>Eliminar paciente</h3>
+            <p class="muted">Esta acción no se puede deshacer.</p>
+
+            <div class="modal-actions">
+              <button class="btn-outline" (click)="cerrarModalEliminarPaciente()">Cancelar</button>
+              <button class="btn-danger" (click)="confirmarEliminarPaciente()">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- ESTUDIANTES -->
+      <!-- ========================= -->
+      <div *ngIf="seccion==='estudiantes'">
+        <div class="section-head">
+          <h2>Estudiantes</h2>
+          <button class="btn" (click)="cargarEstudiantes()">Recargar</button>
+        </div>
+
+        <div class="split">
+          <div class="card">
+            <h3>Crear estudiante</h3>
+            <div class="form">
+              <input placeholder="Nombre" [(ngModel)]="nuevoEstudiante.nombre" name="e_nombre" />
+              <input placeholder="Apellido" [(ngModel)]="nuevoEstudiante.apellido" name="e_apellido" />
+              <input placeholder="Correo" [(ngModel)]="nuevoEstudiante.correo" name="e_correo" />
+              <input placeholder="Contraseña" type="password" [(ngModel)]="nuevoEstudiante.password" name="e_password" />
+
+              <button class="btn primary" type="button" (click)="crearEstudiante()" [disabled]="cargando">
+                Crear estudiante
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Listado de estudiantes</h3>
+              <button class="btn" (click)="cargarEstudiantes()">Recargar</button>
+            </div>
+
+            <div class="muted" *ngIf="cargandoEstudiantes">Cargando...</div>
+            <div class="alert error" *ngIf="errorEstudiantes">{{ errorEstudiantes }}</div>
+
+            <div class="table-wrap" *ngIf="!cargandoEstudiantes">
+              <table class="table" *ngIf="estudiantes.length > 0">
+                <thead>
+                  <tr>
+                    <th style="width: 70px;">ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th style="width: 140px;">Rol</th>
+                    <th style="width: 90px;">Activo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let e of estudiantes">
+                    <td>{{ e.id_usuario }}</td>
+                    <td>{{ e.nombre }}</td>
+                    <td>{{ e.apellido }}</td>
+                    <td>{{ e.correo }}</td>
+                    <td><span class="pill">{{ e.rol }}</span></td>
+                    <td>
+                      <span class="pill" [class.ok]="e.activo" [class.error]="!e.activo">
+                        {{ e.activo ? 'Sí' : 'No' }}
+                      </span>
+                    </td>
+                    <td class="actions">
+                      <button class="btn btn-outline" (click)="abrirEditarEstudiante(e, $event)">Editar</button>
+                      <button class="btn btn-danger" (click)="eliminarEstudiante(e, $event)">Eliminar</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="muted" *ngIf="estudiantes.length === 0">No hay estudiantes registrados.</div>
+            </div>
+          </div>
+              <!-- MODAL EDITAR ESTUDIANTE -->
+              <div class="modal-backdrop" *ngIf="modalEditarEstudiante" (click)="cerrarEditarEstudiante()"></div>
+
+              <div class="modal" *ngIf="modalEditarEstudiante">
+                <div class="modal-card" (click)="$event.stopPropagation()">
+                  <div class="modal-header">
+                    <h3>Editar estudiante</h3>
+                    <button class="icon-btn" (click)="cerrarEditarEstudiante()">✕</button>
+                  </div>
+
+                  <div class="modal-body">
+                    <label>Nombre</label>
+                    <input [(ngModel)]="editEstudianteForm.nombre" />
+
+                    <label>Apellido</label>
+                    <input [(ngModel)]="editEstudianteForm.apellido" />
+
+                    <label>Correo</label>
+                    <input [(ngModel)]="editEstudianteForm.correo" />
+
+                    <label>Nueva contraseña (opcional)</label>
+                    <input
+                      type="password"
+                      [(ngModel)]="editEstudianteForm.password"
+                      placeholder="Dejar vacío para no cambiar"
+                    />
+                    <label style="display:flex; gap:10px; align-items:center; margin-top:6px;">
+                      <input type="checkbox" [(ngModel)]="editEstudianteForm.activo" />
+                      Activo
+                    </label>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-outline" (click)="cerrarEditarEstudiante()">Cancelar</button>
+                    <button class="btn" (click)="guardarEdicionEstudiante()">Guardar cambios</button>
+                  </div>
+                </div>
+              </div>
+            <!-- /MODAL -->
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- PROFESORES -->
+      <!-- ========================= -->
+      <!-- ====== PROFESORES ====== -->
+      <section *ngIf="seccion === 'profesores'">
+        <div class="panel-head">
+          <div>
+            <h2>Profesores</h2>
+            <p class="muted">Crear, editar y eliminar profesores</p>
+          </div>
+          
+          <button class="btn-outline" (click)="cargarProfesores()">Recargar</button>
+        </div>
+
+        <div class="grid-2">
+          <!-- Crear -->
+          <div class="card">
+            <h3>Crear profesor</h3>
+
+            <div class="form">
+              <input class="input" placeholder="Nombre" [(ngModel)]="nuevoProfesor.nombre">
+              <input class="input" placeholder="Apellido" [(ngModel)]="nuevoProfesor.apellido">
+              <input class="input" placeholder="Correo" [(ngModel)]="nuevoProfesor.correo">
+              <input class="input" placeholder="Contraseña" type="password" [(ngModel)]="nuevoProfesor.password">
+
+              <label class="check">
+                <input type="checkbox" [(ngModel)]="profEdit.activo">
+                <span>Activo</span>
+              </label>
+              <button class="btn-primary" (click)="crearProfesor()">Crear profesor</button>
+            </div>
+          </div>
+
+          <!-- Listado -->
+          <div class="card">
+            <div class="card-head">
+              <h3>Listado de profesores</h3>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width:70px;">ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th style="width:120px;">Rol</th>
+                    <th style="width:120px;">Activo</th>
+                    <th style="width:170px;">Acciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let p of profesores">
+                    <td>{{ p.id_usuario }}</td>
+                    <td>{{ p.nombre }}</td>
+                    <td>{{ p.apellido }}</td>
+                    <td>{{ p.correo }}</td>
+                    <td><span class="chip">{{ p.rol }}</span></td>
+                    <td>
+                      <span class="chip" [class.ok]="p.activo == 1" [class.bad]="p.activo != 1">
+                        {{ p.activo == 1 ? 'Sí' : 'No' }}
+                      </span>
+                    </td>
+                    <td>
+                      <button class="btn btn-outline" (click)="abrirModalProfesor(p)">Editar</button>
+                      <button class="btn btn-danger" (click)="eliminarProfesor(p)">Eliminar</button>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="!profesores || profesores.length === 0">
+                    <td colspan="7" class="muted" style="padding:16px;">No hay profesores.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== MODAL EDITAR PROFESOR ===== -->
+        <div class="modal-backdrop" *ngIf="modalProfesorAbierto" (click)="cerrarModalProfesor()"></div>
+
+        <div class="modal" *ngIf="modalProfesorAbierto">
+          <div class="modal-card" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+              <h3>Editar profesor</h3>
+              <button class="icon-btn" (click)="cerrarModalProfesor()">✕</button>
+            </div>
+
+            <div class="modal-body">
+              <div class="form grid-2">
+                <div>
+                  <label class="lbl">Nombre</label>
+                  <input class="input" [(ngModel)]="profEdit.nombre">
+                </div>
+
+                <div>
+                  <label class="lbl">Apellido</label>
+                  <input class="input" [(ngModel)]="profEdit.apellido">
+                </div>
+
+                <div class="span-2">
+                  <label class="lbl">Correo</label>
+                  <input class="input" [(ngModel)]="profEdit.correo">
+                </div>
+
+                <div class="span-2">
+                  <label class="lbl">Nueva contraseña (opcional)</label>
+                  <input class="input" type="password" [(ngModel)]="profEdit.password" placeholder="Dejar vacío para no cambiar">
+                </div>
+
+                <div class="span-2">
+                  <label class="check">
+                    <input type="checkbox" [(ngModel)]="profEdit.activo">
+                    <span>Activo</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-foot">
+              <button class="btn-outline" (click)="cerrarModalProfesor()">Cancelar</button>
+              <button class="btn-primary" (click)="guardarProfesor()">Guardar cambios</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================= -->
+      <!-- ASIGNACIÓN -->
+      <!-- ========================= -->
+      <div *ngIf="seccion==='asignacion'">
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Asignación de Estudiantes y Pacientes</h2>
+              <p class="muted">
+                Haz clic en un estudiante para ver los pacientes que ha creado
+              </p>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+              <button class="btn-outline" (click)="cargarPacientes()">
+                Cargar pacientes
+              </button>
+            </div>
+          </div>
+
+
+          <!-- LOADING -->
+          <div class="muted" *ngIf="cargandoEstudiantes || cargandoPacientes">
+            ⏳ Cargando estudiantes y pacientes...
+          </div>
+
+          <!-- ERROR -->
+          <div class="alert error"
+              *ngIf="(!cargandoEstudiantes && errorEstudiantes) || (!cargandoPacientes && errorPacientes)">
+            {{ errorEstudiantes || errorPacientes }}
+          </div>
+
+          <!-- TABLA -->
+          <div class="table-wrap"
+              *ngIf="!cargandoEstudiantes && !cargandoPacientes && estudiantes.length > 0">
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:80px;">ID</th>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th style="width:120px;">Pacientes</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let e of estudiantes">
+
+                  <!-- FILA ESTUDIANTE -->
+                  <tr (click)="toggleEstudiante(e)" style="cursor:pointer">
+                    <td>{{ e.id_usuario }}</td>
+                    <td>{{ nombreCompleto(e) }}</td>
+                    <td>{{ e.correo }}</td>
+                    <td>
+                      {{ contarPacientesEstudiante(e.id_usuario) }}
+                    </td>
+                  </tr>
+                  <!-- SUBTABLA PACIENTES -->
+                  <tr *ngIf="estudianteExpandidoId === e.id_usuario">
+                    <td colspan="4">
+                      <div class="subcard">
+                        <h3>
+                          Pacientes creados por {{ nombreCompleto(e) }}
+                        </h3>
+                        <div class="muted"
+                            *ngIf="contarPacientesEstudiante(e.id_usuario) === 0">
+                          Este estudiante aún no ha creado pacientes.
+                        </div>
+                        <div class="table-wrap"
+                            *ngIf="contarPacientesEstudiante(e.id_usuario) > 0">
+                          <table class="table table-small">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Cédula</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let p of pacientesPorEstudiante[e.id_usuario]">
+                                <td>{{ p.id_paciente }}</td>
+                                <td>{{ p.nombre }}</td>
+                                <td>{{ p.apellido }}</td>
+                                <td>{{ p.cedula }}</td>
+                                <td>{{ p.telefono }}</td>
+                                <td>{{ p.direccion }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+          <!-- SIN ESTUDIANTES -->
+          <div class="muted"
+              *ngIf="!cargandoEstudiantes && estudiantes.length === 0">
+            No hay estudiantes registrados.
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================= -->
+      <!-- DOCENTE ↔ ESTUDIANTE -->
+      <!-- ========================= -->
+      <div *ngIf="seccion==='docente-estudiante'">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <h2>Asignación Docente ↔ Estudiante</h2>
+              <p class="muted">Asigna estudiantes a profesores para que puedan ver y aprobar sus trabajos</p>
+            </div>
+            <button class="btn-outline" (click)="cargarAsignaciones(); cargarProfesores(); cargarEstudiantes()">Recargar</button>
+          </div>
+
+          <div class="alert ok" *ngIf="okAsignaciones">{{ okAsignaciones }}</div>
+          <div class="alert error" *ngIf="errorAsignaciones">{{ errorAsignaciones }}</div>
+
+          <!-- FORMULARIO DE ASIGNACIÓN -->
+          <div class="grid-form" style="margin-bottom: 24px;">
+            <div>
+              <label class="lbl">Profesor</label>
+              <select class="input" [(ngModel)]="profesorSeleccionadoId">
+                <option [ngValue]="null" disabled>-- Seleccionar profesor --</option>
+                <option *ngFor="let p of profesores" [ngValue]="p.id_usuario">
+                  {{ p.nombre }} {{ p.apellido }}
+                </option>
+              </select>
+            </div>
+
+            <div>
+              <label class="lbl">Estudiante</label>
+              <select class="input" [(ngModel)]="estudianteParaAsignarId">
+                <option [ngValue]="null" disabled>-- Seleccionar estudiante --</option>
+                <option *ngFor="let e of estudiantes" [ngValue]="e.id_usuario"
+                        [disabled]="profesorSeleccionadoId && estudianteYaAsignado(profesorSeleccionadoId, e.id_usuario)">
+                  {{ e.nombre }} {{ e.apellido }}
+                  {{ profesorAsignadoA(e.id_usuario) ? ' ← ' + profesorAsignadoA(e.id_usuario) : '' }}
+                  {{ profesorSeleccionadoId && estudianteYaAsignado(profesorSeleccionadoId, e.id_usuario) ? '(ya asignado)' : '' }}
+                </option>
+              </select>
+            </div>
+
+            <button class="btn-primary"
+                    (click)="asignarEstudianteAProfesor()"
+                    [disabled]="!profesorSeleccionadoId || !estudianteParaAsignarId || cargandoAsignaciones">
+              Asignar
+            </button>
+          </div>
+
+          <!-- TABLA DE PROFESORES (expandible) -->
+          <div class="muted" *ngIf="cargandoAsignaciones">⏳ Cargando asignaciones...</div>
+
+          <div class="table-wrap" *ngIf="!cargandoAsignaciones && profesores.length > 0">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width:80px;">ID</th>
+                  <th>Profesor</th>
+                  <th>Correo</th>
+                  <th style="width:140px;">Estudiantes</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <ng-container *ngFor="let p of profesores">
+                  <tr (click)="toggleProfesor(p)" style="cursor:pointer">
+                    <td>{{ p.id_usuario }}</td>
+                    <td>{{ p.nombre }} {{ p.apellido }}</td>
+                    <td>{{ p.correo }}</td>
+                    <td>{{ contarEstudiantesProfesor(p.id_usuario) }}</td>
+                  </tr>
+
+                  <!-- SUBTABLA: estudiantes asignados al profesor -->
+                  <tr *ngIf="profesorExpandidoId === p.id_usuario">
+                    <td colspan="4">
+                      <div class="subcard">
+                        <h3>Estudiantes de {{ p.nombre }} {{ p.apellido }}</h3>
+
+                        <div class="muted" *ngIf="getEstudiantesDelProfesorExpandido().length === 0">
+                          Este profesor no tiene estudiantes asignados.
+                        </div>
+
+                        <div class="table-wrap" *ngIf="getEstudiantesDelProfesorExpandido().length > 0">
+                          <table class="table table-small">
+                            <thead>
+                              <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Correo</th>
+                                <th style="width:120px;">Acciones</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let e of getEstudiantesDelProfesorExpandido()">
+                                <td>{{ e.id_usuario }}</td>
+                                <td>{{ e.nombre }}</td>
+                                <td>{{ e.apellido }}</td>
+                                <td>{{ e.correo }}</td>
+                                <td>
+                                  <button class="btn-danger" (click)="desasignar(p.id_usuario, e.id_usuario); $event.stopPropagation()">
+                                    Desasignar
+                                  </button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="muted" *ngIf="!cargandoAsignaciones && profesores.length === 0">
+            No hay profesores registrados.
+          </div>
+        </div>
+      </div>
+
+    </section>
+  </main>
+</div>

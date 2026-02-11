@@ -1,0 +1,6 @@
+ng add @angular/material
+npm install jwt-decode
+npm install -g @angular/cli
+npm install jwt-decode
+npm install --save-dev @types/jwt-decode
+npm install @angular/platform-browser-dynamic --save

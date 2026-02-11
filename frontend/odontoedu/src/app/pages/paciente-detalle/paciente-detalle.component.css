@@ -1,0 +1,523 @@
+:host { display:block; }
+
+/* =========================
+   FONDO MODERNO (LOGIN STYLE)
+========================= */
+.page{
+  padding: 22px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: #e5e7eb;
+
+  background:
+    radial-gradient(circle at top left, #0ea5e9, transparent 40%),
+    radial-gradient(circle at top right, #22c55e, transparent 45%),
+    radial-gradient(circle at bottom, #2563eb, transparent 45%),
+    #020617;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.header h2{
+  margin:0;
+  font-size: 22px;
+  letter-spacing: -0.4px;
+  color: #ffffff;
+}
+
+.sub{
+  margin:6px 0 0;
+  color: rgba(226, 232, 240, 0.78);
+  font-size: 13px;
+}
+
+/* =========================
+   ALERTS
+========================= */
+.alert{
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin: 10px 0 14px;
+  font-weight: 700;
+}
+
+.alert.error{
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fecaca;
+}
+
+/* =========================
+   TABS (moderno)
+========================= */
+.tabs{
+  display:flex;
+  gap: 10px;
+  margin: 14px 0 14px;
+  flex-wrap: wrap;
+}
+
+.tab{
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226, 232, 240, 0.92);
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  transition: all 0.25s ease;
+}
+
+.tab:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.tab.active{
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  border-color: rgba(255,255,255,0.25);
+  color: #020617;
+  box-shadow: 0 10px 30px rgba(34, 197, 94, 0.35);
+}
+
+/* =========================
+   CARDS (glass)
+========================= */
+.card{
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  padding: 16px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.card h3{
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.muted{
+  color: rgba(226, 232, 240, 0.70);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* =========================
+   TOOLBAR / SELECT
+========================= */
+.toolbar{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+.select{
+  padding: 8px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(2, 6, 23, 0.45);
+  color: #e2e8f0;
+}
+
+/* =========================
+   BOTONES (igual login/admin)
+========================= */
+.btn{
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226, 232, 240, 0.95);
+  cursor: pointer;
+  font-weight: 800;
+  transition: all 0.25s ease;
+}
+
+.btn:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.btn.primary,
+.btn-primary{
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  border: none;
+  color: #020617;
+  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.35);
+}
+
+.btn.primary:hover,
+.btn-primary:hover{
+  filter: brightness(1.05);
+}
+
+/* =========================
+   FORM GRID
+   (no rompe nada)
+========================= */
+.form-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 900px){
+  .form-grid{ grid-template-columns: 1fr; }
+}
+
+.field{ display:flex; flex-direction:column; gap: 6px; }
+.field.full{ grid-column: 1 / -1; }
+
+label{
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.80);
+  font-weight: 800;
+}
+
+input, textarea{
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 14px;
+  padding: 11px 12px;
+  outline: none;
+  font-size: 13px;
+  background: rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color: rgba(226, 232, 240, 0.45);
+}
+
+input:focus, textarea:focus{
+  border-color: rgba(34, 197, 94, 0.55);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+}
+
+/* acciones */
+.actions{
+  grid-column: 1 / -1;
+  display:flex;
+  gap: 10px;
+  justify-content:flex-start;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   LOADING / MENSAJES
+========================= */
+.loading{
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(251, 146, 60, 0.12);
+  border: 1px solid rgba(251, 146, 60, 0.25);
+  color: #fdba74;
+  font-weight: 800;
+}
+
+/* =========================
+   KPIs
+========================= */
+.kpis{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px){
+  .kpis{ grid-template-columns: 1fr; }
+}
+
+.kpi{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.kpi-title{
+  font-size: 12px;
+  color: rgba(226, 232, 240, 0.70);
+  font-weight: 800;
+}
+
+.kpi-value{
+  margin-top: 6px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+/* =========================
+   TABLAS (NO SE DAÑAN)
+========================= */
+.table-wrap{ margin-top: 14px; overflow:auto; }
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: transparent;
+}
+
+.table th{
+  text-align:left;
+  color: rgba(226, 232, 240, 0.70);
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  padding: 10px 8px;
+  white-space: nowrap;
+}
+
+.table td{
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 10px 8px;
+  vertical-align: top;
+  color: rgba(226, 232, 240, 0.90);
+}
+
+.table tr:hover td{
+  background: rgba(255,255,255,0.04);
+}
+
+.table.compact td, .table.compact th{ padding: 8px 8px; }
+
+/* =========================
+   BADGES / CHIPS (NO rompe lógica)
+========================= */
+.badge{
+  display:inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+}
+
+.badge::before{
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  background: #94a3b8;
+}
+
+.b-caries{
+  background: rgba(239, 68, 68, 0.14);
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.b-caries::before{ background: #ef4444; }
+
+.b-ausente{
+  background: rgba(148, 163, 184, 0.12);
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+.b-ausente::before{ background: #94a3b8; }
+
+.b-restauracion{
+  background: rgba(6, 182, 212, 0.12);
+  color: #a5f3fc;
+  border-color: rgba(6, 182, 212, 0.24);
+}
+
+.b-restauracion::before{ background: #06b6d4; }
+
+/* =========================
+   TABLA ODONTOGRAMA ESPECÍFICA
+========================= */
+.tabla-wrap{
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.tabla-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.tabla-header h4{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.tabla-header small{
+  color: rgba(226, 232, 240, 0.70);
+  font-size: 13px;
+}
+
+.tabla-scroll{
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.tabla-odonto{
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 520px;
+  background: transparent;
+}
+
+.tabla-odonto thead th{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  padding: 12px 14px;
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.85);
+
+  background: rgba(2, 6, 23, 0.55);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.tabla-odonto tbody td{
+  padding: 12px 14px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.tabla-odonto tbody tr:hover td{
+  background: rgba(255,255,255,0.04);
+}
+
+.chip{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 13px;
+  background: rgba(59, 130, 246, 0.14);
+  color: #bfdbfe;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.cara{
+  font-weight: 900;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.88);
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+}
+
+.nota{
+  color: rgba(226, 232, 240, 0.75);
+}
+
+.tabla-empty{
+  margin-top: 15px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255,255,255,0.18);
+  background: rgba(2, 6, 23, 0.35);
+  color: rgba(226, 232, 240, 0.70);
+  font-size: 14px;
+}
+
+.layout,
+.main,
+.page{
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0.04),
+      rgba(0,0,0,0.35)
+    ),
+    #0e1117 !important;
+}
+
+/* =====================================
+   FORZAR FONDO SOLIDO (QUITAR BLUR REAL)
+===================================== */
+
+/* fondo general */
+body,
+html,
+.layout,
+.main,
+.page,
+.content {
+  background-color: #f2f4f7 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* tarjetas grandes (contenedor principal) */
+.card {
+  background-color: #1054c2 !important; /* gris sólido */
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* header superior */
+.topbar,
+.header {
+  background-color: #1054c2 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* elimina pseudo-elementos que generan blur */
+.layout::before,
+.main::before,
+.page::before,
+.card::before {
+  content: none !important;
+  display: none !important;
+}

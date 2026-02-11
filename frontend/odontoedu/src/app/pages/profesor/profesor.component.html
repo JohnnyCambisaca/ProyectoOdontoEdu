@@ -1,0 +1,309 @@
+<main class="profesor-page">
+
+  <!-- HEADER -->
+  <header class="topbar">
+    <div>
+      <h1>Panel Profesor</h1>
+      <p class="hint">Universidad Politécnica Salesiana</p>
+      <p class="hint" *ngIf="usuarioActual" style="margin-top:4px; color:#fff; font-weight:700;">
+        👤 {{ usuarioActual.nombre }} {{ usuarioActual.apellido }}
+      </p>
+    </div>
+
+    <div class="top-actions">
+      <button class="btn-outline" (click)="recargarTodo()">Recargar todo</button>
+      <button class="btn-danger" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <!-- ===========================
+       SOLICITUDES PENDIENTES
+  ============================ -->
+  <section class="card">
+    <div class="card-head">
+      <h2>Solicitudes pendientes</h2>
+      <span class="pill">Total: <b>{{ solicitudes.length }}</b></span>
+    </div>
+
+    <div class="muted" *ngIf="cargandoSolicitudes">⏳ Cargando solicitudes...</div>
+    <div class="muted error" *ngIf="!cargandoSolicitudes && errorSolicitudes">❌ {{ errorSolicitudes }}</div>
+    <div class="muted" *ngIf="!cargandoSolicitudes && solicitudes.length === 0">No hay solicitudes pendientes.</div>
+
+    <div class="table-wrap" *ngIf="!cargandoSolicitudes && solicitudes.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Estudiante</th>
+            <th>Motivo</th>
+            <th>Nota</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th style="width: 220px;">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of solicitudes">
+            <td>{{ s.id_solicitud }}</td>
+            <td>{{ s.paciente_nombre || ('Paciente #' + s.paciente_id) }}</td>
+            <td>{{ s.estudiante_nombre || ('Est. #' + s.estudiante_id) }}</td>
+            <td>{{ s.motivo }}</td>
+            <td>{{ s.nota || '-' }}</td>
+            <td>{{ s.fecha_creacion ? (s.fecha_creacion | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+            <td>
+              <span class="badge badge-pending">{{ s.estado }}</span>
+            </td>
+            <td class="actions">
+              <button class="btn-success"
+                      (click)="aprobarSolicitud(s)"
+                      [disabled]="aprobando || denegando">
+                Aprobar
+              </button>
+              <button class="btn-danger"
+                      (click)="denegarSolicitud(s)"
+                      [disabled]="aprobando || denegando">
+                Denegar
+              </button>
+              <button class="btn-outline" (click)="verDetalleSolicitud(s)">
+                Ver
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===========================
+       APROBADAS / DENEGADAS
+  ============================ -->
+  <section class="card">
+    <div class="card-head">
+      <h2>Solicitudes Aprobadas/Denegadas</h2>
+      <span class="pill">Total: <b>{{ solicitudesHistorial.length }}</b></span>
+    </div>
+
+    <div class="muted" *ngIf="cargandoHistorial">⏳ Cargando historial...</div>
+    <div class="muted" *ngIf="!cargandoHistorial && solicitudesHistorial.length === 0">No hay solicitudes aprobadas o denegadas.</div>
+
+    <div class="table-wrap" *ngIf="!cargandoHistorial && solicitudesHistorial.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Estudiante</th>
+            <th>Motivo</th>
+            <th>Nota</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of solicitudesHistorial">
+            <td>{{ s.id_solicitud }}</td>
+            <td>{{ s.paciente_nombre || ('Paciente #' + s.paciente_id) }}</td>
+            <td>{{ s.estudiante_nombre || ('Est. #' + s.estudiante_id) }}</td>
+            <td>{{ s.motivo }}</td>
+            <td>{{ s.nota || '-' }}</td>
+            <td>{{ s.fecha_creacion ? (s.fecha_creacion | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+            <td>
+              <span class="pill"
+                    [ngClass]="{
+                      'pill-ok': (s.estado || '').toUpperCase().includes('APROBADO'),
+                      'pill-bad': (s.estado || '').toUpperCase().includes('DENEGADO')
+                    }">
+                {{ s.estado }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===========================
+       ESTUDIANTES + PACIENTES
+  ============================ -->
+  <section class="card">
+    <div class="card-head">
+      <h2>Estudiantes</h2>
+      <span class="pill">Estudiantes: <b>{{ estudiantes.length }}</b></span>
+    </div>
+
+    <div class="muted" *ngIf="cargandoEstudiantes || cargandoPacientes">
+      ⏳ Cargando estudiantes registrados...
+    </div>
+
+    <div class="muted error" *ngIf="(!cargandoEstudiantes && errorEstudiantes) || (!cargandoPacientes && errorPacientes)">
+      ❌ {{ errorEstudiantes || errorPacientes }}
+    </div>
+
+    <div class="table-wrap" *ngIf="!cargandoEstudiantes && !cargandoPacientes && estudiantes.length > 0">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th style="width:120px;">Pacientes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let e of estudiantes">
+            <tr (click)="toggleEstudiante(e)" style="cursor: pointer;">
+              <td>{{ e.id_usuario }}</td>
+              <td>{{ nombreCompleto(e) }}</td>
+              <td>{{ e.correo }}</td>
+              <td>{{ contarPacientesEstudiante(e.id_usuario) }}</td>
+            </tr>
+
+            <!-- SUBTABLA DE PACIENTES -->
+            <tr *ngIf="estudianteExpandidoId === e.id_usuario">
+              <td colspan="4">
+                <div class="subcard">
+                  <h3>Pacientes creados por {{ nombreCompleto(e) }}</h3>
+
+                  <div class="muted" *ngIf="contarPacientesEstudiante(e.id_usuario) === 0">
+                    Este estudiante aún no ha creado pacientes.
+                  </div>
+
+                  <div class="table-wrap" *ngIf="contarPacientesEstudiante(e.id_usuario) > 0">
+                    <table class="table table-small">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Nombre</th>
+                          <th>Apellido</th>
+                          <th>Cédula</th>
+                          <th>Teléfono</th>
+                          <th>Dirección</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let p of pacientesPorEstudiante[e.id_usuario.toString()]">
+                          <td>{{ p.id_paciente }}</td>
+                          <td>{{ p.nombre }}</td>
+                          <td>{{ p.apellido }}</td>
+                          <td>{{ p.cedula }}</td>
+                          <td>{{ p.telefono }}</td>
+                          <td>{{ p.direccion }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="muted" *ngIf="!cargandoEstudiantes && estudiantes.length === 0">
+      No hay estudiantes registrados.
+    </div>
+  </section>
+
+  <!-- ========================= -->
+  <!-- MODAL DETALLE SOLICITUD -->
+  <!-- ========================= -->
+  <div class="modal-backdrop" *ngIf="modalDetalleAbierto">
+    <div class="modal-lg">
+      <div class="modal-header">
+        <h3>Detalle del paciente</h3>
+        <button class="close" (click)="cerrarModalDetalle()">×</button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="seccion">
+          <h3>Estudiante a Cargo</h3>
+          <p *ngIf="estudianteSolicitud">
+            <strong>Nombre:</strong>
+            {{ estudianteSolicitud.nombre }} {{ estudianteSolicitud.apellido }}
+          </p>
+          <p *ngIf="!estudianteSolicitud" class="muted">
+            Estudiante no encontrado
+          </p>
+        </div>
+
+        <!-- HISTORIA CLÍNICA -->
+        <section>
+          <h4>HISTORIA CLINICA</h4>
+          <div *ngIf="historiaForm; else sinHistoria">
+            <p><strong>Motivo:</strong> {{ historiaForm.motivo }}</p>
+            <p><strong>Diagnostico:</strong> {{ historiaForm.diagnostico }}</p>
+            <p><strong>Observaciones:</strong> {{ historiaForm.observaciones }}</p>
+            <p *ngIf="historiaForm.fecha_registro">
+              <strong>Fecha:</strong> {{ historiaForm.fecha_registro | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+          </div>
+          <ng-template #sinHistoria>
+            <p class="muted">No hay historia clínica registrada.</p>
+          </ng-template>
+        </section>
+
+        <hr>
+
+        <!-- ODONTOGRAMA -->
+        <section>
+          <h4>ODONTOGRAMA</h4>
+          <div *ngIf="odontograma.length > 0; else sinOdontograma">
+            <table class="table small">
+              <thead>
+                <tr>
+                  <th>Diente</th>
+                  <th>Cara</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of odontograma">
+                  <td>{{ o.diente }}</td>
+                  <td>{{ o.cara }}</td>
+                  <td>{{ o.estado }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #sinOdontograma>
+            <p class="muted">No hay odontograma registrado.</p>
+          </ng-template>
+        </section>
+
+        <hr>
+
+        <!-- TRATAMIENTOS -->
+        <section>
+          <h4>TRATAMIENTOS</h4>
+          <div *ngIf="tratamientos.length > 0; else sinTratamientos">
+            <table class="table small">
+              <thead>
+                <tr>
+                  <th>Descripción</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let t of tratamientos">
+                  <td>{{ t.descripcion }}</td>
+                  <td>{{ t.fecha ? (t.fecha | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ng-template #sinTratamientos>
+            <p class="muted">No hay tratamientos registrados.</p>
+          </ng-template>
+        </section>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline" (click)="cerrarModalDetalle()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+</main>

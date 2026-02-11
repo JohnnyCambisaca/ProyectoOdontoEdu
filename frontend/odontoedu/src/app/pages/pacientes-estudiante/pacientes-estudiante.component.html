@@ -1,0 +1,119 @@
+<main class="main">
+  <header class="topbar">
+    <div>
+      <h1>Pacientes (Estudiante)</h1>
+      <span class="hint">Crear y gestionar tus pacientes</span>
+      <p class="hint" *ngIf="usuarioActual" style="margin-top:4px; color:#fff; font-weight:700;">
+        👤 {{ usuarioActual.nombre }} {{ usuarioActual.apellido }}
+      </p>
+    </div>
+
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <span class="pill" *ngIf="cargando">⏳ Cargando...</span>
+      <button class="btn-outline" (click)="cargarPacientes()">Recargar</button>
+      <button class="btn-danger" (click)="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+
+  <section class="grid-2">
+    <!-- Crear -->
+    <div class="card">
+      <h3>Crear paciente</h3>
+
+      <div class="form">
+        <input class="input" placeholder="Nombre" [(ngModel)]="form.nombre" />
+        <input class="input" placeholder="Apellido" [(ngModel)]="form.apellido" />
+        <input class="input" placeholder="Cédula" [(ngModel)]="form.cedula" />
+        <input class="input" placeholder="Teléfono" [(ngModel)]="form.telefono" />
+        <input class="input" placeholder="Dirección" [(ngModel)]="form.direccion" />
+
+        <button class="btn-primary" (click)="crearPaciente()" [disabled]="cargando">
+          Crear
+        </button>
+      </div>
+    </div>
+
+    <!-- Listado -->
+    <div class="card">
+      <h3>Listado</h3>
+
+      <div class="muted" *ngIf="!cargando && pacientes.length === 0">
+        No hay pacientes registrados.
+      </div>
+
+      <div class="table-wrap" *ngIf="pacientes.length > 0">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Cédula</th>
+              <th>Teléfono</th>
+              <th>Dirección</th>
+              <th style="width: 160px;">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of pacientes">
+              <td>{{ p.id_paciente || p.id }}</td>
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.apellido }}</td>
+              <td>{{ p.cedula }}</td>
+              <td>{{ p.telefono }}</td>
+              <td>{{ p.direccion }}</td>
+              <td>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                  <button class="btn" [routerLink]="['/paciente', (p.id_paciente || p.id)]">
+                    Ver
+                  </button>
+                  <button class="btn btn-warn" (click)="abrirEditar(p)">
+                    Editar
+                  </button>
+                  <button class="btn btn-danger" (click)="eliminarPaciente(p)">
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL EDITAR PACIENTE -->
+  <div class="modal-backdrop" *ngIf="modalEditarAbierto" (click)="cerrarEditar()"></div>
+
+  <div class="modal" *ngIf="modalEditarAbierto" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h3 style="margin:0;">Editar paciente</h3>
+          <div class="hint">Actualiza los datos y guarda cambios</div>
+        </div>
+        <button class="icon-btn" (click)="cerrarEditar()" title="Cerrar">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form grid-form">
+          <input class="input" placeholder="Nombre" [(ngModel)]="editForm.nombre" />
+          <input class="input" placeholder="Apellido" [(ngModel)]="editForm.apellido" />
+          <input class="input" placeholder="Cédula" [(ngModel)]="editForm.cedula" />
+          <input class="input" placeholder="Teléfono" [(ngModel)]="editForm.telefono" />
+          <input class="input full" placeholder="Dirección" [(ngModel)]="editForm.direccion" />
+        </div>
+        <div class="alert error" *ngIf="errorEditar">{{ errorEditar }}</div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn-outline" (click)="cerrarEditar()">Cancelar</button>
+        <button class="btn-primary" (click)="guardarEdicion()" [disabled]="guardandoEditar">
+          {{ guardandoEditar ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

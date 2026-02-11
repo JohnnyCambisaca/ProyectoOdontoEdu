@@ -1,0 +1,134 @@
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h3>Odontograma FDI</h3>
+      <div class="sub">Clic en una cara: V (vestibular), L (lingual), M (mesial), D (distal), O (oclusal)</div>
+    </div>
+
+    <div class="tools">
+      <select [(ngModel)]="estadoSel" name="estadoSel">
+        <option value="CARIES">Caries</option>
+        <option value="RESTAURACION">Restauración</option>
+        <option value="SANO">Sano</option>
+        <option value="AUSENTE">Ausente</option>
+        <option value="EXTRAIDO">Extraído</option>
+      </select>
+      <button class="btn" (click)="cargar()">Recargar</button>
+      <span class="msg">{{ msg }}</span>
+    </div>
+  </div>
+
+  <!-- Defs SVG (solo 1 vez) -->
+  <svg class="defs" viewBox="0 0 100 140" aria-hidden="true">
+    <defs>
+
+      <!-- INCISIVO -->
+      <symbol id="tooth-INCISIVO" viewBox="0 0 100 140">
+        <path class="tooth"
+          d="M40,10 Q50,4 60,10 Q70,18 68,36 Q66,52 60,68 Q55,84 50,115 Q45,84 40,68 Q34,52 32,36 Q30,18 40,10 Z"/>
+      </symbol>
+
+      <!-- CANINO -->
+      <symbol id="tooth-CANINO" viewBox="0 0 100 140">
+        <path class="tooth"
+          d="M42,10 Q50,3 58,10 Q70,20 68,40 Q66,55 58,70 Q52,82 50,118 Q48,82 42,70 Q34,55 32,40 Q30,20 42,10 Z"/>
+      </symbol>
+
+      <!-- PREMOLAR -->
+      <symbol id="tooth-PREMOLAR" viewBox="0 0 100 140">
+        <path class="tooth"
+          d="M34,14 Q50,2 66,14 Q78,26 74,44 Q70,60 62,76 Q56,88 50,120 Q44,88 38,76 Q30,60 26,44 Q22,26 34,14 Z"/>
+      </symbol>
+
+      <!-- MOLAR -->
+      <symbol id="tooth-MOLAR" viewBox="0 0 100 140">
+        <path class="tooth"
+          d="M28,18 Q50,2 72,18 Q86,34 80,52 Q76,66 66,82 Q58,96 50,122 Q42,96 34,82 Q24,66 20,52 Q14,34 28,18 Z"/>
+      </symbol>
+
+      <!-- Caras (misma geometría para todos, se dibuja encima) -->
+      <symbol id="faces-5" viewBox="0 0 100 140">
+        <!-- V (arriba) -->
+        <path id="face-V" d="M35,28 L65,28 L60,40 L40,40 Z"/>
+        <!-- L (abajo) -->
+        <path id="face-L" d="M40,78 L60,78 L65,90 L35,90 Z"/>
+        <!-- O (centro) -->
+        <path id="face-O" d="M42,48 L58,48 L62,64 L50,72 L38,64 Z"/>
+        <!-- M (izq) -->
+        <path id="face-M" d="M30,42 L40,40 L42,72 L32,70 Z"/>
+        <!-- D (der) -->
+        <path id="face-D" d="M60,40 L70,42 L68,70 L58,72 Z"/>
+      </symbol>
+
+    </defs>
+  </svg>
+
+  <!-- ARCADA SUPERIOR -->
+  <div class="row">
+    <div class="cell" *ngFor="let t of sup">
+      <svg viewBox="0 0 100 140" class="toothSvg">
+        <use [attr.href]="symbolId(t.tipo)"></use>
+
+        <!-- Caras -->
+        <g class="faces">
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'V'))" [attr.stroke]="stroke(getEstado(t.fdi,'V'))"
+            d="M35,28 L65,28 L60,40 L40,40 Z"
+            (click)="clickCara(t.fdi,'V')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'L'))" [attr.stroke]="stroke(getEstado(t.fdi,'L'))"
+            d="M40,78 L60,78 L65,90 L35,90 Z"
+            (click)="clickCara(t.fdi,'L')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'O'))" [attr.stroke]="stroke(getEstado(t.fdi,'O'))"
+            d="M42,48 L58,48 L62,64 L50,72 L38,64 Z"
+            (click)="clickCara(t.fdi,'O')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'M'))" [attr.stroke]="stroke(getEstado(t.fdi,'M'))"
+            d="M30,42 L40,40 L42,72 L32,70 Z"
+            (click)="clickCara(t.fdi,'M')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'D'))" [attr.stroke]="stroke(getEstado(t.fdi,'D'))"
+            d="M60,40 L70,42 L68,70 L58,72 Z"
+            (click)="clickCara(t.fdi,'D')"/>
+        </g>
+      </svg>
+
+      <div class="num">{{ t.fdi }}</div>
+    </div>
+  </div>
+
+  <!-- ARCADA INFERIOR -->
+  <div class="row">
+    <div class="cell" *ngFor="let t of inf">
+      <svg viewBox="0 0 100 140" class="toothSvg">
+        <use [attr.href]="symbolId(t.tipo)"></use>
+
+        <g class="faces">
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'V'))" [attr.stroke]="stroke(getEstado(t.fdi,'V'))"
+            d="M35,28 L65,28 L60,40 L40,40 Z"
+            (click)="clickCara(t.fdi,'V')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'L'))" [attr.stroke]="stroke(getEstado(t.fdi,'L'))"
+            d="M40,78 L60,78 L65,90 L35,90 Z"
+            (click)="clickCara(t.fdi,'L')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'O'))" [attr.stroke]="stroke(getEstado(t.fdi,'O'))"
+            d="M42,48 L58,48 L62,64 L50,72 L38,64 Z"
+            (click)="clickCara(t.fdi,'O')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'M'))" [attr.stroke]="stroke(getEstado(t.fdi,'M'))"
+            d="M30,42 L40,40 L42,72 L32,70 Z"
+            (click)="clickCara(t.fdi,'M')"/>
+          <path class="face"
+            [attr.fill]="color(getEstado(t.fdi,'D'))" [attr.stroke]="stroke(getEstado(t.fdi,'D'))"
+            d="M60,40 L70,42 L68,70 L58,72 Z"
+            (click)="clickCara(t.fdi,'D')"/>
+        </g>
+      </svg>
+
+      <div class="num">{{ t.fdi }}</div>
+    </div>
+  </div>
+</div>

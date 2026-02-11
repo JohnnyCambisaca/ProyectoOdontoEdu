@@ -1,0 +1,403 @@
+:host { display:block; }
+
+/* =========================
+   FONDO (LOGIN STYLE)
+========================= */
+.main{
+  padding: 22px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: #e5e7eb;
+
+  background:
+    radial-gradient(circle at top left, #0ea5e9, transparent 40%),
+    radial-gradient(circle at top right, #22c55e, transparent 45%),
+    radial-gradient(circle at bottom, #2563eb, transparent 45%),
+    #020617;
+}
+
+/* =========================
+   TOPBAR GLASS
+========================= */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.topbar h1{
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+}
+
+.hint{
+  color: rgba(226, 232, 240, 0.75);
+  font-size: 12px;
+  margin-top: 6px;
+  display:block;
+}
+
+/* =========================
+   BOTONES
+========================= */
+.btn-outline{
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 800;
+  color: rgba(226, 232, 240, 0.92);
+  transition: all .25s ease;
+}
+
+.btn-outline:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.btn-primary{
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  color: #020617;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-weight: 900;
+  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.35);
+  transition: all .25s ease;
+}
+
+.btn-primary:hover{
+  filter: brightness(1.05);
+}
+
+.btn-primary:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  filter:none;
+}
+
+/* Botones tabla */
+.btn{
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 8px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  color: rgba(226, 232, 240, 0.92);
+  transition: all .25s ease;
+}
+
+.btn:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.btn-warn{
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.25);
+  color: #bfdbfe;
+}
+
+.btn-danger{
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #fecaca;
+}
+
+/* =========================
+   PILL CARGANDO
+========================= */
+.pill{
+  display:inline-block;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+
+  background: rgba(251, 146, 60, 0.14);
+  border: 1px solid rgba(251, 146, 60, 0.28);
+  color: #fdba74;
+
+  margin-right: 10px;
+}
+
+/* =========================
+   ALERT ERROR
+========================= */
+.alert.error{
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  padding: 12px;
+  border-radius: 14px;
+  margin-bottom: 12px;
+  color: #fecaca;
+  font-weight: 900;
+}
+
+/* =========================
+   GRID
+========================= */
+.grid-2{
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 980px){
+  .grid-2{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================
+   CARD GLASS
+========================= */
+.card{
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  padding: 16px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.card h3{
+  margin:0 0 10px 0;
+  color:#ffffff;
+}
+
+/* =========================
+   FORM
+========================= */
+.form{
+  display:grid;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.input{
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  outline: none;
+  font-size: 13px;
+
+  background: rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+}
+
+.input::placeholder{
+  color: rgba(226, 232, 240, 0.45);
+}
+
+.input:focus{
+  border-color: rgba(34, 197, 94, 0.55);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+}
+
+/* =========================
+   TABLA (no rompe)
+========================= */
+.table-wrap{
+  overflow:auto;
+  margin-top: 10px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td{
+  text-align:left;
+  padding: 12px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.table th{
+  color: rgba(226, 232, 240, 0.70);
+  font-weight: 900;
+  white-space: nowrap;
+  background: rgba(2, 6, 23, 0.55);
+}
+
+.table tr:hover td{
+  background: rgba(255,255,255,0.04);
+}
+
+/* texto muted */
+.muted{
+  color: rgba(226, 232, 240, 0.65);
+  font-size: 13px;
+}
+
+/* =========================
+   MODAL (glass)
+========================= */
+.modal-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 50;
+}
+
+.modal{
+  position: fixed;
+  inset: 0;
+  display:grid;
+  place-items:center;
+  padding: 18px;
+  z-index: 60;
+}
+
+.modal-card{
+  width: min(720px, 96vw);
+  border-radius: 18px;
+  overflow: hidden;
+
+  background: rgba(15, 23, 42, 0.70);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
+}
+
+.modal-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+.modal-head h3{
+  margin:0;
+  color:#ffffff;
+}
+
+.modal-body{
+  padding: 16px;
+}
+
+.modal-foot{
+  display:flex;
+  justify-content:flex-end;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.icon-btn{
+  background: rgba(2, 6, 23, 0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  cursor:pointer;
+  color: rgba(226, 232, 240, 0.92);
+  font-weight: 900;
+}
+
+.icon-btn:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+/* Grid modal editar */
+.grid-form{
+  grid-template-columns: 1fr 1fr;
+}
+
+.grid-form .full{
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px){
+  .grid-form{
+    grid-template-columns: 1fr;
+  }
+  .grid-form .full{
+    grid-column: auto;
+  }
+}
+
+.layout,
+.main,
+.page{
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0.04),
+      rgba(0,0,0,0.35)
+    ),
+    #0e1117 !important;
+}
+
+/* =====================================
+   FORZAR FONDO SOLIDO (QUITAR BLUR REAL)
+===================================== */
+
+/* fondo general */
+body,
+html,
+.layout,
+.main,
+.page,
+.content {
+  background-color: #f2f4f7 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* tarjetas grandes (contenedor principal) */
+.card {
+  background-color: #1054c2 !important; /* gris sólido */
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* header superior */
+.topbar,
+.header {
+  background-color: #1054c2 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* elimina pseudo-elementos que generan blur */
+.layout::before,
+.main::before,
+.page::before,
+.card::before {
+  content: none !important;
+  display: none !important;
+}

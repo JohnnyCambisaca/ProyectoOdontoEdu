@@ -1,0 +1,485 @@
+:host { display:block; }
+
+/* =========================
+   FONDO (LOGIN STYLE)
+========================= */
+.main{
+  padding: 22px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: #e5e7eb;
+
+  background:
+    radial-gradient(circle at top left, #0ea5e9, transparent 40%),
+    radial-gradient(circle at top right, #22c55e, transparent 45%),
+    radial-gradient(circle at bottom, #2563eb, transparent 45%),
+    #020617;
+}
+
+/* =========================
+   TOPBAR GLASS
+========================= */
+.topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:16px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.topbar h1{
+  margin: 0;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+}
+
+.hint{
+  display:block;
+  margin-top:6px;
+  color: rgba(226, 232, 240, 0.75);
+  font-size:12px;
+}
+
+.right{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   PILL (estado cargando)
+========================= */
+.pill{
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight: 800;
+
+  background: rgba(251, 146, 60, 0.14);
+  border: 1px solid rgba(251, 146, 60, 0.28);
+  color: #fdba74;
+}
+
+/* =========================
+   ALERT ERROR
+========================= */
+.alert{
+  padding:12px;
+  border-radius:14px;
+  margin-bottom:12px;
+  font-weight: 800;
+
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: #fecaca;
+}
+
+/* =========================
+   GRID + CARDS GLASS
+========================= */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:16px;
+}
+
+@media (max-width: 980px){
+  .grid{ grid-template-columns: 1fr; }
+}
+
+.card{
+  border-radius: 18px;
+  padding:16px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.card-head h2{
+  margin:0;
+  font-size:16px;
+  color: #ffffff;
+}
+
+.muted{
+  color: rgba(226, 232, 240, 0.70);
+  font-size:12px;
+}
+
+/* =========================
+   PROCEDIMIENTOS (bloques)
+========================= */
+.proc{
+  margin-top:14px;
+  padding-top:14px;
+  border-top: 1px solid rgba(255,255,255,0.10);
+
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap: wrap;
+}
+
+.proc-left{
+  min-width: 240px;
+  flex: 1;
+}
+
+.proc-name{
+  font-weight: 900;
+  color: rgba(226, 232, 240, 0.96);
+}
+
+.proc-sub{
+  margin:6px 0 10px;
+  font-size:12px;
+  color: rgba(226, 232, 240, 0.82);
+}
+
+/* =========================
+   BOTONES (LOGIN STYLE)
+========================= */
+.btn-outline{
+  padding:10px 12px;
+  border-radius:14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226, 232, 240, 0.92);
+  cursor:pointer;
+  font-weight: 800;
+  transition: all .25s ease;
+}
+
+.btn-outline:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.btn-primary{
+  padding:10px 12px;
+  border-radius:14px;
+  border: none;
+  cursor:pointer;
+  font-weight: 900;
+  color: #020617;
+
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.35);
+  transition: all .25s ease;
+}
+
+.btn-primary:hover{
+  filter: brightness(1.05);
+}
+
+.btn-primary:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  box-shadow: none;
+  filter: none;
+}
+
+.btn-danger{
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.12);
+  color:#fecaca;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor:pointer;
+  transition: all .25s ease;
+}
+
+.btn-danger:hover{ background: rgba(239, 68, 68, 0.16); }
+
+/* =========================
+   CÍRCULO PROGRESO (SVG)
+   - NO cambia lógica
+========================= */
+.ring{
+  width:84px;
+  height:84px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px;
+  border-radius: 18px;
+
+  background: rgba(2, 6, 23, 0.35);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.progress{ width:84px; height:84px; }
+
+.bg{
+  fill:none;
+  stroke: rgba(226, 232, 240, 0.25);
+  stroke-width:3.6;
+}
+
+.fg{
+  fill:none;
+  stroke: #22c55e;
+  stroke-width:3.6;
+  stroke-linecap:round;
+  filter: drop-shadow(0 0 6px rgba(34,197,94,0.25));
+}
+
+.text{
+  fill: rgba(226, 232, 240, 0.92);
+  font-size:8px;
+  font-weight:900;
+  text-anchor:middle;
+}
+
+.layout,
+.main,
+.page{
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,0.04),
+      rgba(0,0,0,0.35)
+    ),
+    #0e1117 !important;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.card {
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
+/* =========================
+   OVERRIDE FONDO BLANCO
+   (no toca nada más)
+========================= */
+.layout,
+.main,
+.page {
+  background: #ffffff !important;
+}
+
+/* =====================================
+   FORZAR FONDO SOLIDO (QUITAR BLUR REAL)
+===================================== */
+
+/* fondo general */
+body,
+html,
+.layout,
+.main,
+.page,
+.content {
+  background-color: #f2f4f7 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* tarjetas grandes (contenedor principal) */
+.card {
+  background-color: #1054c2 !important; /* gris sólido */
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* header superior */
+.topbar,
+.header {
+  background-color: #1054c2 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* elimina pseudo-elementos que generan blur */
+.layout::before,
+.main::before,
+.page::before,
+.card::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* =========================
+   RESUMEN DE SOLICITUDES
+========================= */
+.resumen-solicitudes {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.resumen-item {
+  flex: 1;
+  min-width: 120px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.resumen-item.aprobado {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.resumen-item.pendiente {
+  background: rgba(251, 191, 36, 0.15);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.resumen-item.denegado {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.resumen-num {
+  display: block;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.resumen-item.aprobado .resumen-num { color: #22c55e; }
+.resumen-item.pendiente .resumen-num { color: #fbbf24; }
+.resumen-item.denegado .resumen-num { color: #ef4444; }
+
+.resumen-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =========================
+   BARRA DE PROGRESO
+========================= */
+.progress-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.progress-bar-bg {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #3b82f6);
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  min-width: 0;
+}
+
+.progress-bar-text {
+  font-size: 13px;
+  font-weight: 900;
+  color: rgba(226, 232, 240, 0.92);
+  min-width: 36px;
+}
+
+/* =========================
+   BADGE COMPLETADO
+========================= */
+.badge-complete {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 800;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+}
+
+/* =========================
+   TABLA HISTORIAL
+========================= */
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.table th {
+  text-align: left;
+  padding: 8px 12px;
+  color: rgba(226, 232, 240, 0.6);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.table td {
+  padding: 8px 12px;
+  color: rgba(226, 232, 240, 0.88);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* =========================
+   ESTADO PILL
+========================= */
+.estado-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.estado-pill.aprobado {
+  background: rgba(34, 197, 94, 0.18);
+  color: #4ade80;
+}
+
+.estado-pill.pendiente {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fbbf24;
+}
+
+.estado-pill.denegado {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+}

@@ -1,0 +1,4 @@
+uvicorn app.main:app --reload
+
+crear usuario admin
+python -m app.init_admin

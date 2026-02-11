@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="OdontoEdu icon 3D">
+  <defs>
+    <!-- Tooth 3D -->
+    <radialGradient id="toothMain" cx="38%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#E9FBFF"/>
+      <stop offset="0.28" stop-color="#9AE9FF"/>
+      <stop offset="0.6" stop-color="#31B9FF"/>
+      <stop offset="1" stop-color="#0D5BFF"/>
+    </radialGradient>
+
+    <radialGradient id="toothGlow" cx="50%" cy="22%" r="55%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="0.6" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="toothEdge" x1="160" y1="160" x2="360" y2="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#CFF7FF"/>
+      <stop offset="0.45" stop-color="#2FB7FF"/>
+      <stop offset="1" stop-color="#083BFF"/>
+    </linearGradient>
+
+    <!-- Cap -->
+    <linearGradient id="capTop" x1="140" y1="60" x2="380" y2="170" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1B2A4A"/>
+      <stop offset="1" stop-color="#0B1220"/>
+    </linearGradient>
+
+    <linearGradient id="capShine" x1="140" y1="70" x2="340" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.25"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Orbits -->
+    <linearGradient id="orbitBlue" x1="70" y1="320" x2="450" y2="270" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#79F2FF"/>
+      <stop offset="0.5" stop-color="#29C8FF"/>
+      <stop offset="1" stop-color="#1B57FF"/>
+    </linearGradient>
+
+    <linearGradient id="orbitGreen" x1="280" y1="250" x2="480" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#B4FFDA"/>
+      <stop offset="0.55" stop-color="#36E58E"/>
+      <stop offset="1" stop-color="#18B85F"/>
+    </linearGradient>
+
+    <!-- Shadows & glow -->
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="outerGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="softGlowSmall" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+  </defs>
+
+  <!-- Sparkles -->
+  <g opacity="0.95" filter="url(#softGlowSmall)">
+    <path d="M430 150l10 22 22 10-22 10-10 22-10-22-22-10 22-10z" fill="#6FE8FF"/>
+    <path d="M394 176l6 13 13 6-13 6-6 13-6-13-13-6 13-6z" fill="#6FE8FF" opacity="0.85"/>
+  </g>
+
+  <!-- Orbit back (green) -->
+  <path
+    d="M322 214c64 18 120 66 124 106 3 27-18 44-52 42-44-3-102-39-140-73"
+    fill="none" stroke="url(#orbitGreen)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"
+    opacity="0.95" filter="url(#outerGlow)"/>
+
+  <!-- Orbit front (blue) -->
+  <path
+    d="M88 306c18-55 92-104 176-116 92-13 180 24 190 68 6 27-18 50-64 60-54 12-134-6-202-42"
+    fill="none" stroke="url(#orbitBlue)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"
+    opacity="0.98" filter="url(#outerGlow)"/>
+
+  <!-- Tooth + cap -->
+  <g filter="url(#shadow)">
+    <!-- Tooth body -->
+    <path
+      d="M256 168
+         C206 168 166 200 160 246
+         C154 296 178 316 182 358
+         C186 402 202 442 230 442
+         C254 442 250 408 256 388
+         C262 408 258 442 282 442
+         C310 442 326 402 330 358
+         C334 316 358 296 352 246
+         C346 200 306 168 256 168Z"
+      fill="url(#toothMain)"/>
+
+    <!-- Tooth glossy edge -->
+    <path
+      d="M256 172
+         C210 172 174 202 168 246
+         C162 294 186 310 190 354
+         C194 396 210 436 232 436
+         C250 436 248 410 256 392
+         C264 410 262 436 280 436
+         C302 436 318 396 322 354
+         C326 310 350 294 344 246
+         C338 202 302 172 256 172Z"
+      fill="none" stroke="url(#toothEdge)" stroke-width="6" opacity="0.65"/>
+
+    <!-- Big shine -->
+    <path
+      d="M204 204
+         C182 238 180 276 190 304
+         C198 326 214 340 218 360
+         C224 392 238 416 258 430
+         C220 414 206 372 202 346
+         C196 304 186 260 204 204Z"
+      fill="url(#toothGlow)" opacity="0.95"/>
+
+    <!-- Small specular highlights -->
+    <ellipse cx="238" cy="230" rx="26" ry="16" fill="#FFFFFF" opacity="0.45"/>
+    <ellipse cx="226" cy="260" rx="14" ry="9" fill="#FFFFFF" opacity="0.28"/>
+
+    <!-- Inner depth -->
+    <path
+      d="M256 208
+         C226 208 202 228 198 256
+         C194 286 206 300 210 332
+         C214 366 226 396 246 396
+         C260 396 256 374 256 356
+         C256 374 252 396 266 396
+         C286 396 298 366 302 332
+         C306 300 318 286 314 256
+         C310 228 286 208 256 208Z"
+      fill="#061636" opacity="0.14"/>
+
+    <!-- Cap top -->
+    <path d="M256 84 L128 132 L256 180 L384 132 Z" fill="url(#capTop)"/>
+    <!-- Cap shine -->
+    <path
+      d="M256 90 L146 132 L256 170 L366 132 Z"
+      fill="url(#capShine)"/>
+
+    <!-- Cap base -->
+    <path
+      d="M186 150
+         C190 182 322 182 326 150
+         L326 134
+         C320 160 192 160 186 134Z"
+      fill="#0A1020" opacity="0.95"/>
+
+    <!-- Tassel -->
+    <path d="M142 136L142 214" stroke="#0A1020" stroke-width="6" stroke-linecap="round"/>
+    <path d="M132 214c10 12 24 12 34 0" fill="none" stroke="#F7B500" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="142" cy="214" r="6" fill="#F7B500"/>
+  </g>
+
+  <!-- Ground shadow -->
+  <ellipse cx="256" cy="458" rx="98" ry="18" fill="#000" opacity="0.14"/>
+</svg>

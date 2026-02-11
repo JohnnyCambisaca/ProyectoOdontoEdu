@@ -1,0 +1,230 @@
+<div class="page">
+  <div class="header">
+    <div>
+      <h2>Ficha del Paciente</h2>
+
+      <div class="sub" *ngIf="paciente">
+        {{ paciente.nombre }} {{ paciente.apellido }} • CI: {{ paciente.cedula }}
+      </div>
+
+      <div class="sub" *ngIf="!paciente">Paciente #{{ pacienteId }}</div>
+    </div>
+
+    <div class="right">
+      <button class="btn" (click)="recargarTabActual()">Recargar</button>
+    </div>
+
+    <button class="btn-primary"
+        (click)="enviarAlProfesor()"
+        [disabled]="enviandoSolicitud || !miProfesor">
+      {{ enviandoSolicitud ? 'Enviando...' :
+         miProfesor ? 'Enviar a Prof. ' + miProfesor.nombre + ' ' + miProfesor.apellido :
+         'Sin profesor asignado' }}
+    </button>
+    
+  </div>
+
+  <div class="alert error" *ngIf="error">{{ error }}</div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="tab==='historia'" (click)="setTab('historia')">Historia clínica</button>
+    <button class="tab" [class.active]="tab==='odontograma'" (click)="setTab('odontograma')">Odontograma</button>
+    <button class="tab" [class.active]="tab==='tratamientos'" (click)="setTab('tratamientos')">Tratamientos</button>
+  </div>
+
+  <div class="card" *ngIf="cargando">Cargando...</div>
+
+  <!-- HISTORIA -->
+  <div class="card" *ngIf="!cargando && tab==='historia'">
+    <h3>Historia clínica</h3>
+    <!-- ✅ PASO 3: FORMULARIO CREAR HISTORIA -->
+    <div class="form">
+      <div class="row">
+        <div class="field">
+          <label>Motivo *</label>
+          <input
+            type="text"
+            [(ngModel)]="historiaForm.motivo"
+            name="motivo"
+            placeholder="Ej: Dolor al masticar"
+          />
+        </div>
+
+        <div class="field">
+          <label>Diagnóstico *</label>
+          <input
+            type="text"
+            [(ngModel)]="historiaForm.diagnostico"
+            name="diagnostico"
+            placeholder="Ej: Caries en molar"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Observaciones</label>
+        <textarea
+          rows="3"
+          [(ngModel)]="historiaForm.observaciones"
+          name="observaciones"
+          placeholder="Notas adicionales..."
+        ></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" (click)="crearHistoriaClinica()" [disabled]="creandoHistoria">
+          {{ creandoHistoria ? 'Guardando...' : 'Guardar historia' }}
+        </button>
+
+        <span class="msg" *ngIf="msgHistoria">{{ msgHistoria }}</span>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="historia.length === 0" class="muted">No hay registros.</div>
+
+    <table *ngIf="historia.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Motivo</th>
+          <th>Diagnóstico</th>
+          <th>Observación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of historia">
+          <td>{{ (h.fecha_registro || h.fecha || h.created_at) ? (h.fecha_registro || h.fecha || h.created_at | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+          <td>{{ h.motivo || '-' }}</td>
+          <td>{{ h.diagnostico || '-' }}</td>
+          <td>{{ h.observaciones || h.observacion || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ODONTOGRAMA -->
+  <!-- ODONTOGRAMA -->
+  <div class="card" *ngIf="!cargando && tab==='odontograma'">
+    <h3>Odontograma</h3>
+
+    <app-odontograma [pacienteId]="pacienteId"></app-odontograma>
+
+    <!-- Si NO hay datos -->
+    <div *ngIf="!odontograma || odontograma.length === 0" class="muted">
+      No hay odontograma para este paciente.
+    </div>
+
+    <!-- Si SI hay datos -->
+    <div *ngIf="odontograma && odontograma.length > 0">
+
+      <div class="grid">
+        <div class="kpi">
+          <div class="kpi-title">Última actualización</div>
+          <div class="kpi-value">
+            {{ odontograma[odontograma.length - 1]?.id_detalle || '-' }}
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TABLA real (DB) -->
+      <div class="tabla-wrap" *ngIf="odontograma?.length">
+      <div class="tabla-header">
+        <h4>Detalle del Odontograma</h4>
+        <small>{{ odontograma.length }} registros</small>
+      </div>
+
+      <div class="tabla-scroll">
+        <table class="tabla-odonto">
+          <thead>
+            <tr>
+              <th>Diente</th>
+              <th>Cara</th>
+              <th>Estado</th>
+              <th>Nota</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of odontograma">
+              <td><span class="chip">{{ item.diente }}</span></td>
+
+              <td><span class="cara">{{ item.cara }}</span></td>
+
+              <td>
+                <span class="badge"
+                  [ngClass]="{
+                    'b-caries': item.estado?.includes('CARIES'),
+                    'b-ausente': item.estado?.includes('AUSENTE'),
+                    'b-restauracion': item.estado?.includes('RESTAURACION')
+                  }"
+                >
+                  {{ item.estado }}
+                </span>
+              </td>
+
+              <td class="nota">{{ item.nota || '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tabla-empty" *ngIf="!odontograma || odontograma.length === 0">
+      No hay registros en odontograma_detalle.
+    </div>
+
+
+    </div>
+  </div>
+
+
+  <!-- TRATAMIENTOS -->
+  <!-- TRATAMIENTOS -->
+  <div class="card" *ngIf="!cargando && tab==='tratamientos'">
+    <h3>Tratamientos</h3>
+
+    <!-- ✅ Formulario: Crear tratamiento (simple) -->
+    <div class="form">
+      <div class="row">
+        <div class="field">
+          <label>Descripción *</label>
+          <input
+            type="text"
+            [(ngModel)]="tratForm.descripcion"
+            name="descripcion"
+            placeholder="Ej: Resina en molar 26"
+          />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" (click)="crearTratamientoSimple()" [disabled]="creandoTrat">
+          {{ creandoTrat ? 'Guardando...' : 'Guardar tratamiento' }}
+        </button>
+
+        <span class="msg" *ngIf="msgTrat">{{ msgTrat }}</span>
+      </div>
+    </div>
+
+    <div *ngIf="tratamientos.length === 0" class="muted">No hay tratamientos.</div>
+
+    <!-- ✅ Listado simple -->
+    <table *ngIf="tratamientos.length > 0" class="table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Descripción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tratamientos">
+          <td>{{ (t.fecha || t.created_at) ? (t.fecha || t.created_at | date:'dd/MM/yyyy HH:mm') : '-' }}</td>
+          <td>{{ t.descripcion || t.detalle || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+

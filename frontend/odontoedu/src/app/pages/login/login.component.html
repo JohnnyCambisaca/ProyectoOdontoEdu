@@ -1,0 +1,76 @@
+<div class="login-page">
+  <div class="bg-blobs" aria-hidden="true">
+    <span class="blob b1"></span>
+    <span class="blob b2"></span>
+    <span class="blob b3"></span>
+  </div>
+
+  <div class="login-card">
+    <div class="brand">
+      <div class="logo-wrap">
+        <div style="font-size: 65px; line-height:-1; text-align:center;">🦷</div>
+       <div class="brand-text"></div>
+      </div>
+
+      <div class="brand-text">
+        <h1>OdontoEdu</h1>
+        <p class="uni">Universidad Politécnica Salesiana</p>
+      </div>
+    </div>
+
+    <div class="title">
+      <h2>Iniciar sesión</h2>
+      <p>Ingresa con tu correo institucional</p>
+    </div>
+
+    <form class="form" (ngSubmit)="login()" autocomplete="on">
+      <label class="field">
+        <span class="label">Correo</span>
+        <div class="input-wrap">
+          <span class="icon" aria-hidden="true">✉</span>
+          <input
+            type="email"
+            name="correo"
+            [(ngModel)]="correo"
+            placeholder="ej: usuario@est.ups.edu.ec"
+            required
+          />
+        </div>
+      </label>
+
+      <label class="field">
+        <span class="label">Contraseña</span>
+        <div class="input-wrap">
+          <span class="icon" aria-hidden="true">🔒</span>
+          <input
+            [type]="mostrarPass ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="••••••••"
+            required
+          />
+          <button type="button" class="eye" (click)="mostrarPass = !mostrarPass">
+            {{ mostrarPass ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+      </label>
+
+      <button class="btn" type="submit" [disabled]="loading">
+        <span *ngIf="!loading">Ingresar</span>
+        <span *ngIf="loading" class="spinner"></span>
+        <span *ngIf="loading">Ingresando…</span>
+      </button>
+
+      <div *ngIf="error" class="error">
+        <span class="dot">!</span>
+        <span>{{ error }}</span>
+      </div>
+    </form>
+
+    <div class="footer">
+      <span>OdontoEdu • Plataforma odontológica</span>
+      <span class="sep">•</span>
+      <span>UPS</span>
+    </div>
+  </div>
+</div>

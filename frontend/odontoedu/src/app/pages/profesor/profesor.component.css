@@ -1,0 +1,573 @@
+:host{ display:block; }
+
+/* =========================
+   PAGE (FONDO GRIS PROFESIONAL)
+========================= */
+.profesor-page{
+  padding: 22px;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: rgba(226,232,240,0.92);
+
+  background:
+    radial-gradient(circle at top, rgba(223, 223, 223, 0.904), transparent 45%),
+    radial-gradient(circle at bottom, rgba(230, 230, 230, 0.856), transparent 50%),
+    #dddddd;
+}
+
+/* =========================
+   TOPBAR (GLASS)
+========================= */
+.topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.topbar h1{
+  margin:0;
+  font-size: 22px;
+  font-weight: 900;
+  color:#ffffff;
+  letter-spacing: -0.4px;
+}
+
+.hint{
+  margin:6px 0 0 0;
+  color: rgba(226, 232, 240, 0.75);
+  font-size: 12px;
+}
+
+/* botones topbar */
+.top-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* =========================
+   CARDS GLASS
+========================= */
+.card{
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 18px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.card-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 12px;
+}
+
+.card-head h2{
+  margin:0;
+  font-size: 16px;
+  font-weight: 900;
+  color:#ffffff;
+}
+
+/* pills */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 7px 12px;
+  border-radius: 999px;
+
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(2, 6, 23, 0.35);
+  color: rgba(226,232,240,0.92);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.pill b{ color:#ffffff; }
+
+/* muted + error */
+.muted{
+  color: rgba(226, 232, 240, 0.65);
+  font-size: 13px;
+  padding: 8px 0;
+}
+
+.muted.error{
+  color:#fecaca;
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+/* =========================
+   TABLAS (MISMO ESTILO ESTUDIANTE-PACIENTE)
+========================= */
+.table-wrap{
+  overflow:auto;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(2, 6, 23, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.table{
+  width:100%;
+  border-collapse: collapse;
+  min-width: 900px;
+  background: transparent;
+}
+
+.table thead th{
+  text-align:left;
+  font-size: 12px;
+  padding: 12px 12px;
+
+  background: rgba(2, 6, 23, 0.55);
+  color: rgba(226,232,240,0.70);
+  font-weight: 900;
+
+  position: sticky;
+  top:0;
+  z-index: 1;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  white-space: nowrap;
+}
+
+.table td{
+  padding: 12px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(226,232,240,0.92);
+  font-size: 13px;
+}
+
+.table tbody tr:hover td{
+  background: rgba(255,255,255,0.04);
+}
+
+/* acciones */
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap: wrap;
+}
+
+/* =========================
+   BOTONES (DARK)
+========================= */
+.btn-outline{
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(15, 23, 42, 0.55);
+  color: rgba(226,232,240,0.92);
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 800;
+  cursor:pointer;
+  transition: all .25s ease;
+}
+
+.btn-outline:hover{
+  background: rgba(255,255,255,0.06);
+}
+
+.btn-success{
+  border: none;
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor:pointer;
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  transition: all .25s ease;
+}
+
+.btn-success:hover{ background: rgba(34, 197, 94, 0.24); }
+
+.btn-success:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.btn-danger{
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.12);
+  color:#fecaca;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 900;
+  cursor:pointer;
+  transition: all .25s ease;
+}
+
+.btn-danger:hover{ background: rgba(239, 68, 68, 0.16); }
+
+.btn-danger:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+/* =========================
+   BADGES / ESTADO
+========================= */
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+
+  background: rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  color: rgba(226,232,240,0.92);
+}
+
+.badge-pending{
+  background: rgba(251, 146, 60, 0.14);
+  border: 1px solid rgba(251, 146, 60, 0.28);
+  color:#fdba74;
+}
+
+/* =========================
+   SUBCARD (PACIENTES DEL ESTUDIANTE)
+========================= */
+.subcard{
+  margin-top: 8px;
+  padding: 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,0.10);
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.subcard h3{
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  font-weight: 900;
+  color:#ffffff;
+}
+
+/* tabla pequeña */
+.table-small{
+  min-width: 700px;
+}
+
+.table-small thead th{
+  background: rgba(2, 6, 23, 0.55);
+}
+
+/* responsive (topbar) */
+@media (max-width: 860px){
+  .topbar{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .top-actions{
+    justify-content: flex-start;
+  }
+  .btn-outline{
+    width: 100%;
+  }
+}
+
+/* ===== OVERLAY ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  width: 92%;
+  max-width: 1000px;
+  max-height: 90vh;
+  background: linear-gradient(180deg, #0f172a, #020617);
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalIn 0.25s ease-out;
+}
+
+.modal-body,
+.modal-section {
+  background: transparent !important;
+  color: rgb(255, 255, 255);
+}
+
+/* ===== HEADER ===== */
+.modal-header {
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #e5e7eb;
+}
+
+.modal-header button {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* ===== BODY (CLAVE) ===== */
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;        /* 🔥 CLAVE */
+  flex: 1;
+  color: #e6e5e9;
+}
+
+/* ===== SECCIONES ===== */
+.modal-section {
+  margin-bottom: 24px;
+}
+
+.modal-section h4 {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+/* ===== TABLAS ===== */
+.modal-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-table th,
+.modal-table td {
+  padding: 10px 12px;
+  font-size: 13px;
+  text-align: left;
+}
+
+.modal-table th {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5f5;
+}
+
+.modal-table td {
+  color: #e5e7eb;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===== TEXTO VACÍO ===== */
+.empty-text {
+  font-size: 13px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ===== ANIMACIÓN ===== */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =====================================
+   FORZAR FONDO SOLIDO (QUITAR BLUR REAL)
+===================================== */
+
+/* fondo general */
+body,
+html,
+.layout,
+.main,
+.page,
+.content {
+  background-color: #f2f4f7 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+/* tarjetas grandes (contenedor principal) */
+.card {
+  background-color: #1054c2 !important; /* gris sólido */
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  box-shadow: none !important;
+}
+
+/* header superior */
+.topbar,
+.header {
+  background-color: #1054c2 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* elimina pseudo-elementos que generan blur */
+.layout::before,
+.main::before,
+.page::before,
+.card::before {
+  content: none !important;
+  display: none !important;
+}
+
+
+
+
+
+/* =====================================
+   MODAL DETALLE PACIENTE (AZUL MARINO)
+===================================== */
+
+/* fondo detrás del modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(240, 242, 245, 0.85); /* fondo claro */
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* contenedor principal del modal */
+.modal-lg {
+  width: 95%;
+  max-width: 1100px;
+  max-height: 92vh;
+
+  background-color: #1054c2; /* 🔥 AZUL MARINO */
+  color: #e5e7eb;
+
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ================= HEADER ================= */
+.modal-header {
+  padding: 18px 22px;
+  background-color: #1054c2; /* un poco más claro */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.modal-header .close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.modal-header .close:hover {
+  color: #ffffff;
+}
+
+/* ================= BODY ================= */
+.modal-body {
+  padding: 22px 24px;
+  overflow-y: auto;
+  flex: 1;
+
+  background-color: #1054c2; /* MISMO AZUL */
+  color: #e5e7eb;
+}
+
+/* secciones internas */
+.modal-body section,
+.modal-body .seccion {
+  margin-bottom: 22px;
+}
+
+.modal-body h4,
+.modal-body h3 {
+  margin-bottom: 10px;
+  color: #fafafa;
+  font-weight: 700;
+}
+
+/* ================= TABLAS DEL MODAL ================= */
+.modal-body .table {
+  background-color: #020617;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-body .table thead th {
+  background-color: #020617;
+  color: #c7d2fe;
+}
+
+.modal-body .table td {
+  color: #e5e7eb;
+}
+
+/* ================= FOOTER ================= */
+.modal-footer {
+  padding: 14px 22px;
+  background-color: #1054c2;
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  display: flex;
+  justify-content: flex-end;
+}
